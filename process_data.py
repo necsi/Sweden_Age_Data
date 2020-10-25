@@ -22,7 +22,7 @@ def main():
         the_big_dict[date] = df_temp.to_dict()[date]
 
     df=pd.DataFrame(data=the_big_dict).fillna(0)
-    df.loc['80+'] = df.loc[['Ålder_80_90', 'Ålder_90_plus', 'Ålder_80_89']].sum()
+    df.loc['80+'] = df.loc[['Ålder_80_90', 'Ålder_90_plus', 'Ålder_80_89']].sum() #Because they changed how they stratify
     df=df.T
     df= df.reset_index().rename(columns={'index': 'Date'})
     df.to_csv('Age_Stratified.csv', index=False)
