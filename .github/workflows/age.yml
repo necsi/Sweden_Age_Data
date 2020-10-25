@@ -4,6 +4,8 @@
 name: Process Age Data
 
 on:
+  push:
+    branches: master
   schedule:
     - cron: '0 */6 * * *'
     
