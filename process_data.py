@@ -3,7 +3,20 @@ import pandas as pd
 from datetime import datetime
 
 def main():
-    r = requests.get('https://api.github.com/repos/adamaltmejd/covid/git/trees/14a910ab0047035d1ad324b7e7a112e1973401f4')
+    #get lastest sha of commit on master
+    r = requests.get('https://api.github.com/repos/adamaltmejd/covid/branches/master')
+    latest_commit_sha = r.json()['commit']['commit']['tree']['sha']
+    #get the files/folders
+    r = requests.get('https://api.github.com/repos/adamaltmejd/covid/git/trees/'+latest_commit_sha)
+    tree = r.json()['tree']
+    #get sha of data/ and get the files/folders of data/
+    sha_of_dir = [i for i in tree if i['path']=='data'][0]['sha']
+    r = requests.get('https://api.github.com/repos/adamaltmejd/covid/git/trees/'+sha_of_dir)
+    tree = r.json()['tree']
+    #get sha of data/FHM/ 
+    sha_of_dir = [i for i in tree if i['path']=='FHM'][0]['sha']
+    r = requests.get('https://api.github.com/repos/adamaltmejd/covid/git/trees/'+sha_of_dir)
+
     j = json.loads(r.content.decode())
     file_names = [i['path'] for i in j['tree']][1:]
     print(file_names)
